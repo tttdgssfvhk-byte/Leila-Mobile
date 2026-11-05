@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leila Mobile | فروشگاه موبایل</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Tahoma, sans-serif;
+}
+
+body {
+    background: #f4f7fc;
+    color: #17233b;
+}
+
+header {
+    background: #fff;
+    padding: 18px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 15px #0000000c;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    color: #1769e0;
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.cart-btn {
+    background: #1769e0;
+    color: white;
+    border: none;
+    padding: 11px 17px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.hero {
+    margin: 25px auto;
+    width: 90%;
+    padding: 45px 25px;
+    border-radius: 20px;
+    background: linear-gradient(120deg,#0755c9,#3995ff);
+    color: white;
+}
+
+.hero h1 {
+    font-size: 29px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    line-height: 2;
+}
+
+.search {
+    width: 90%;
+    margin: 25px auto;
+}
+
+.search input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 15px;
+    outline-color: #1769e0;
+}
+
+.products {
+    width: 90%;
+    margin: 30px auto;
+}
+
+.products h2 {
+    margin-bottom: 22px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 15px;
+}
+
+.product {
+    background: white;
+    border-radius: 15px;
+    padding: 13px;
+    box-shadow: 0 4px 15px #00000008;
+}
+
+.product img {
+    width: 100%;
+    height: 145px;
+    object-fit: contain;
+}
+
+.product h3 {
+    font-size: 14px;
+    margin: 12px 0;
+}
+
+.price {
+    color: #1769e0;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.product button {
+    width: 100%;
+    background: #1769e0;
+    color: white;
+    border: none;
+    padding: 11px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.cart {
+    display: none;
+    background: white;
+    width: 90%;
+    margin: 25px auto;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.cart h2 {
+    margin-bottom: 15px;
+}
+
+.cart-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.total {
+    margin: 20px 0;
+    font-weight: bold;
+    color: #1769e0;
+}
+
+.checkout input {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+}
+
+.checkout button {
+    width: 100%;
+    padding: 14px;
+    background: #15965b;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+footer {
+    text-align: center;
+    background: #102747;
+    color: white;
+    padding: 25px;
+    margin-top: 40px;
+}
+
+@media(max-width:350px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">LEILA MOBILE</div>
+    <button class="cart-btn" onclick="toggleCart()">
+        🛒 سبد خرید (<span id="count">0</span>)
+    </button>
+</header>
+
+<section class="hero">
+    <h1>به Leila Mobile خوش آمدید</h1>
+    <p>خرید آسان موبایل و لوازم جانبی با بهترین قیمت</p>
+</section>
+
+<div class="search">
+    <input id="search" type="text"
+    placeholder="🔍 جست‌وجوی محصول..."
+    oninput="searchProducts()">
+</div>
+
+<section class="products">
+    <h2>محصولات فروشگاه</h2>
+    <div class="product-grid" id="productGrid"></div>
+</section>
+
+<section class="cart" id="cart">
+    <h2>🛒 سبد خرید شما</h2>
+    <div id="cartItems"></div>
+    <div class="total" id="total"></div>
+
+    <div class="checkout">
+        <h3>اطلاعات خریدار</h3>
+        <input id="customerName" placeholder="نام و نام خانوادگی">
+        <input id="customerPhone" placeholder="شماره موبایل" type="tel">
+        <button onclick="submitOrder()">ثبت سفارش</button>
+    </div>
+</section>
+
+<footer>
+    <h3>LEILA MOBILE</h3>
+    <p>فروشگاه اینترنتی موبایل و لوازم جانبی</p>
+    <p>تمام حقوق محفوظ است © 2026</p>
+</footer>
+
+<script>
+const products = [
+    {
+        id: 1,
+        name: "iPhone 16 Pro",
+        price: 85000000,
+        image: "https://images.unsplash.com/photo-1726769538235-3f4b16b6f9d1?w=500"
+    },
+    {
+        id: 2,
+        name: "Samsung S25 Ultra",
+        price: 95000000,
+        image: "https://images.unsplash.com/photo-1707237818736-2c0f8f3c7d4f?w=500"
+    },
+    {
+        id: 3,
+        name: "iPhone 15",
+        price: 65000000,
+        image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500"
+    },
+    {
+        id: 4,
+        name: "AirPods Pro",
+        price: 12000000,
+        image: "https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?w=500"
+    }
+];
+
+let cart = [];
+
+function formatPrice(price) {
+    return price.toLocaleString("fa-IR") + " تومان";
+}
+
+function showProducts(list = products) {
+    const grid = document.getElementById("productGrid");
+    grid.innerHTML = "";
+
+    list.forEach(product => {
+        grid.innerHTML += `
+        <div class="product">
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <div class="price">${formatPrice(product.price)}</div>
+            <button onclick="addToCart(${product.id})">
+                افزودن به سبد خرید
+            </button>
+        </div>`;
+    });
+}
+
+function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    const item = cart.find(p => p.id === id);
+
+    if (item) {
+        item.quantity++;
+    } else {
+        cart.push({...product, quantity: 1});
+    }
+
+    updateCart();
+}
+
+function updateCart() {
+    document.getElementById("count").textContent =
+        cart.reduce((sum, p) => sum + p.quantity, 0);
+
+    document.getElementById("cartItems").innerHTML =
+        cart.map(p => `
+        <div class="cart-item">
+            ${p.name} × ${p.quantity}
+            <br>${formatPrice(p.price * p.quantity)}
+        </div>
+        `).join("");
+
+    const total = cart.reduce(
+        (sum, p) => sum + p.price * p.quantity, 0
+    );
+
+    document.getElementById("total").textContent =
+        "مبلغ کل: " + formatPrice(total);
+}
+
+function toggleCart() {
+    const box = document.getElementById("cart");
+    box.style.display =
+        box.style.display === "block" ? "none" : "block";
+}
+
+function searchProducts() {
+    const value = document.getElementById("search").value
+        .toLowerCase();
+
+    showProducts(products.filter(p =>
+        p.name.toLowerCase().includes(value)
+    ));
+}
+
+function submitOrder() {
+    const name = document.getElementById("customerName").value.trim();
+    const phone = document.getElementById("customerPhone").value.trim();
+
+    if (cart.length === 0) {
+        alert("سبد خرید شما خالی است");
+        return;
+    }
+
+    if (!name || !phone) {
+        alert("لطفاً نام و شماره موبایل را وارد کنید");
+        return;
+    }
+
+    alert("ظاهر اولیه سایت آماده است؛ برای ثبت واقعی سفارش باید بک‌اند آنلاین متصل شود.");
+}
+
+showProducts();
+</script>
+
+</body>
+</html>
