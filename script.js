@@ -1,120 +1,91 @@
+const API_URL = "https://leila-mobile-backend.ethiodeploy.app/order";
 
-document.addEventListener("DOMContentLoaded", function () {
+const products = [
+    { id: 1, name: "iPhone 16 Pro", price: 85000000 },
+    { id: 2, name: "Samsung S25 Ultra", price: 95000000 },
+    { id: 3, name: "iPhone 15", price: 65000000 },
+    { id: 4, name: "AirPods Pro", price: 12000000 }
+];
 
-    const products = [
-        {
-            id: 1,
-            name: "iPhone 16 Pro",
-            price: 85000000,
-            image: "https://images.unsplash.com/photo-1726769538235-3f4b16b6f9d1?w=500"
-        },
-        {
-            id: 2,
-            name: "Samsung S25 Ultra",
-            price: 95000000,
-            image: "https://images.unsplash.com/photo-1706481765098-7c4d9e1b6f5e?w=500"
-        },
-        {
-            id: 3,
-            name: "iPhone 15",
-            price: 65000000,
-            image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500"
-        },
-        {
-            id: 4,
-            name: "AirPods Pro",
-            price: 12000000,
-            image: "https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?w=500"
-        }
-    ];
+let cart = [];
 
-    let cart = [];
+function renderCart() {
+    const cartItems = document.getElementById("cart-items");
+    const totalElement = document.getElementById("total");
 
-    function formatPrice(number) {
-        return number.toLocaleString("fa-IR");
-    }
+    cartItems.innerHTML = "";
 
-    function showProducts() {
-        const list = document.getElementById("product-list");
+    let total = 0;
 
-        if (!list) return;
-
-        list.innerHTML = products.map(product => `
-            <div class="card">
-                <img src="${product.image}" alt="${product.name}">
-                <h3>${product.name}</h3>
-                <p class="price">${formatPrice(product.price)} تومان</p>
-                <button onclick="addToCart(${product.id})">
-                    افزودن به سبد خرید
-                </button>
-            </div>
-        `).join("");
-    }
-
-    function updateCart() {
-        const box = document.getElementById("cart-items");
-        const totalElement = document.getElementById("total");
-
-        if (!box || !totalElement) return;
-
-        if (cart.length === 0) {
-            box.textContent = "سبد خرید خالی است.";
-        } else {
-            box.innerHTML = cart.map(item => `
-                <p>
-                    ${item.name} × ${item.quantity}
-                    <button onclick="removeItem(${item.id})">حذف</button>
-                </p>
-            `).join("");
-        }
-
-        const total = cart.reduce(
-            (sum, item) => sum + item.price * item.quantity, 0
-        );
-
-        totalElement.textContent = formatPrice(total);
-    }
-
-    window.addToCart = function (id) {
-        const product = products.find(p => p.id === id);
-        const item = cart.find(p => p.id === id);
-
+    cart.forEach(item => {
+        const product = products.find(p => p.id === item.id);
         if (!product) return;
 
-        if (item) {
-            item.quantity++;
-        } else {
-            cart.push({ ...product, quantity: 1 });
+        total += product.price * item.quantity;
+
+        cartItems.innerHTML += `
+            <div>
+                ${product.name} × ${item.quantity}
+                <button onclick="removeFromCart(${item.id})">حذف</button>
+            </div>
+        `;
+    });
+
+    totalElement.textContent = total.toLocaleString("fa-IR") + " تومان";
+}
+
+function addToCart(id) {
+    const item = cart.find(p => p.id === id);
+
+    if (item) {
+        item.quantity++;
+    } else {
+        cart.push({ id, quantity: 1 });
+    }
+
+    renderCart();
+}
+
+function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+    renderCart();
+}
+
+async function submitOrder() {
+    const name = document.getElementById("customer-name").value.trim();
+    const phone = document.getElementById("customer-phone").value.trim();
+    const message = document.getElementById("message").value.trim();
+
+    if (!name || !phone || cart.length === 0) {
+        alert("لطفاً نام، شماره تماس و محصولات را وارد کنید.");
+        return;
+    }
+
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name,
+                phone,
+                message,
+                items: cart
+            })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.error || "خطا در ثبت سفارش");
         }
 
-        updateCart();
-    };
+        alert("سفارش شما با موفقیت ثبت شد.");
+        cart = [];
+        renderCart();
 
-    window.removeItem = function (id) {
-        cart = cart.filter(item => item.id !== id);
-        updateCart();
-    };
-
-    window.submitOrder = function () {
-        const name = document.getElementById("customer-name").value.trim();
-        const phone = document.getElementById("customer-phone").value.trim();
-        const message = document.getElementById("message");
-
-        if (cart.length === 0) {
-            message.textContent = "سبد خرید خالی است.";
-            return;
-        }
-
-        if (!name || !phone) {
-            message.textContent = "نام و شماره تماس را وارد کنید.";
-            return;
-        }
-
-        message.textContent =
-            "برای ثبت واقعی سفارش باید سرور امن متصل شود.";
-    };
-
-    showProducts();
-    updateCart();
-
-});
+    } catch (error) {
+        alert("خطا در ارسال سفارش: " + error.message);
+    }
+}
