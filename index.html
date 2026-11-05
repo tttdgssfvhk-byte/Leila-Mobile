@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leila Mobile | فروشگاه موبایل</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Leila Mobile</h1>
+    <p>فروشگاه تخصصی موبایل و لوازم جانبی</p>
+</header>
+
+<nav>
+    <a href="#home">خانه</a>
+    <a href="#products">محصولات</a>
+    <a href="#cart">سبد خرید</a>
+</nav>
+
+<section class="hero" id="home">
+    <h2>به لیلا موبایل خوش آمدید</h2>
+    <p>جدیدترین گوشی‌ها و لوازم جانبی را اینجا ببینید.</p>
+    <button onclick="document.getElementById('products').scrollIntoView()">
+        مشاهده محصولات
+    </button>
+</section>
+
+<main class="container">
+    <h2 id="products">محصولات فروشگاه</h2>
+
+    <div class="products" id="product-list"></div>
+
+    <section class="cart" id="cart">
+        <h2>سبد خرید</h2>
+        <div id="cart-items">سبد خرید خالی است.</div>
+        <h3>مجموع: <span id="total">۰</span> تومان</h3>
+    </section>
+
+    <section class="order">
+        <h2>اطلاعات سفارش</h2>
+        <input id="customer-name" type="text" placeholder="نام و نام خانوادگی">
+        <input id="customer-phone" type="tel" placeholder="شماره تماس">
+        <button onclick="submitOrder()">ثبت سفارش</button>
+        <p id="message"></p>
+    </section>
+</main>
+
+<footer>
+    <p>© تمامی حقوق برای Leila Mobile محفوظ است.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
