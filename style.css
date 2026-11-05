@@ -1,0 +1,180 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Tahoma, Arial, sans-serif;
+    direction: rtl;
+    background: #f4f7fb;
+    color: #172033;
+}
+
+header {
+    background: linear-gradient(135deg, #092b59, #1764b5);
+    color: white;
+    padding: 25px 15px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 14px;
+    color: #dceaff;
+}
+
+nav {
+    background: white;
+    padding: 17px;
+    text-align: center;
+    box-shadow: 0 3px 10px #00000010;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+nav a {
+    text-decoration: none;
+    color: #123d78;
+    font-weight: bold;
+    margin: 0 12px;
+}
+
+.hero {
+    background: linear-gradient(135deg, #dcecff, #b9d9ff);
+    padding: 65px 20px;
+    text-align: center;
+}
+
+.hero h2 {
+    font-size: 30px;
+    color: #123d78;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    margin-bottom: 20px;
+    color: #40536c;
+}
+
+.container {
+    max-width: 1150px;
+    margin: 35px auto;
+    padding: 15px;
+}
+
+.container > h2 {
+    margin-bottom: 22px;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 5px 18px #00000010;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    width: 100%;
+    height: 190px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    margin-bottom: 12px;
+}
+
+.price {
+    color: #1764b5;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+button {
+    background: #1458a5;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #092b59;
+}
+
+.cart,
+.order {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 30px;
+    box-shadow: 0 4px 15px #00000010;
+}
+
+.cart p {
+    margin: 12px 0;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 1px solid #d5dce7;
+    border-radius: 9px;
+    font-family: inherit;
+    outline: none;
+}
+
+input:focus {
+    border-color: #1764b5;
+}
+
+#message {
+    margin-top: 15px;
+    color: #1764b5;
+}
+
+footer {
+    background: #092b59;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    margin-top: 50px;
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 25px;
+    }
+
+    .hero h2 {
+        font-size: 23px;
+    }
+
+    nav a {
+        margin: 0 6px;
+        font-size: 13px;
+    }
+}
