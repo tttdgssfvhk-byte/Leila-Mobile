@@ -41,10 +41,29 @@
 
     <section class="order">
         <h2>اطلاعات سفارش</h2>
-        <input id="customer-name" type="text" placeholder="نام و نام خانوادگی">
-        <input id="customer-phone" type="tel" placeholder="شماره تماس">
-        <button onclick="submitOrder()">ثبت سفارش</button>
-        <p id="message"></p>
+
+        <input
+            id="customer-name"
+            type="text"
+            placeholder="نام و نام خانوادگی"
+            autocomplete="name"
+        >
+
+        <input
+            id="customer-phone"
+            type="tel"
+            placeholder="شماره تماس"
+            autocomplete="tel"
+        >
+
+        <textarea
+            id="message"
+            placeholder="توضیحات سفارش (اختیاری)"
+        ></textarea>
+
+        <button type="button" onclick="submitOrder()">
+            ثبت سفارش
+        </button>
     </section>
 </main>
 
