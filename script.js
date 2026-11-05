@@ -1,8 +1,9 @@
+
 const API_URL = "https://leila-mobile-backend.ethiodeploy.app/order";
 
 const products = [
-    { id: 1, name: "iPhone 16 Pro", price: 85000000 },
-    { id: 2, name: "Samsung S25 Ultra", price: 95000000 },
+    { id: 1, name: "iPhone 16 Pro", price: 262000000 },
+    { id: 2, name: "Samsung S25 Ultra", price: 300000000 },
     { id: 3, name: "iPhone 15", price: 65000000 },
     { id: 4, name: "AirPods Pro", price: 12000000 }
 ];
@@ -16,6 +17,10 @@ function renderCart() {
     cartItems.innerHTML = "";
 
     let total = 0;
+
+    if (cart.length === 0) {
+        cartItems.textContent = "سبد خرید خالی است.";
+    }
 
     cart.forEach(item => {
         const product = products.find(p => p.id === item.id);
@@ -31,7 +36,8 @@ function renderCart() {
         `;
     });
 
-    totalElement.textContent = total.toLocaleString("fa-IR") + " تومان";
+    totalElement.textContent =
+        total.toLocaleString("fa-IR") + " تومان";
 }
 
 function addToCart(id) {
@@ -82,6 +88,7 @@ async function submitOrder() {
         }
 
         alert("سفارش شما با موفقیت ثبت شد.");
+
         cart = [];
         renderCart();
 
@@ -89,3 +96,5 @@ async function submitOrder() {
         alert("خطا در ارسال سفارش: " + error.message);
     }
 }
+
+renderCart();
